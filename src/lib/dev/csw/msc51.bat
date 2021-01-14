@@ -11,4 +11,4 @@ cl /I..\..\..\include /c cswnoise.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c cswparam.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c cswpzld.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c cswsetup.c >> ..\..\..\msc.out
-lib ..\..\dev3.lib @response.lib >> ..\..\..\msc.out
+lib /OUT:..\..\dev3.lib @response.lib >> ..\..\..\msc.out

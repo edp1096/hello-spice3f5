@@ -15,4 +15,4 @@ cl /I..\..\..\include /c ressload.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c ressprt.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c ressset.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c restemp.c >> ..\..\..\msc.out
-lib ..\..\dev1.lib @response.lib >> ..\..\..\msc.out
+lib /OUT:..\..\dev1.lib @response.lib >> ..\..\..\msc.out

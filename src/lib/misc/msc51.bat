@@ -9,4 +9,4 @@ cl /I..\..\include /c printnum.c >> ..\..\msc.out
 cl /I..\..\include /c string.c >> ..\..\msc.out
 cl /I..\..\include /c tilde.c >> ..\..\msc.out
 cl /I..\..\include /c time.c >> ..\..\msc.out
-lib ..\misc.lib @response.lib >> ..\..\msc.out
+lib /OUT:..\misc.lib @response.lib >> ..\..\msc.out

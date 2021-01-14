@@ -384,13 +384,13 @@ int *pExponent;
 
     /* Re-normalize (re or im may be > 2.0 or both < 1.0 */
     if (re != 0.0) {
-	y = logb(re);
+	y = _logb(re);
 	if (im != 0.0)
-	    z = logb(im);
+	    z = _logb(im);
 	else
 	    z = 0;
     } else if (im != 0.0) {
-	z = logb(im);
+	z = _logb(im);
 	y = 0;
     } else {
 	/* Singular */
@@ -406,14 +406,14 @@ int *pExponent;
 	y = z;
 
     *pExponent = x + y;
-    x = scalb(re, (int) -y);
-    z = scalb(im, (int) -y);
+    x = _scalb(re, (int) -y);
+    z = _scalb(im, (int) -y);
 #ifdef debug_print
     printf(" ** values are: re %g, im %g, y %g, re' %g, im' %g\n",
 	    re, im, y, x, z);
 #endif
-    pMantissa->real = scalb(re, (int) -y);
-    pMantissa->imag = scalb(im, (int) -y);
+    pMantissa->real = _scalb(re, (int) -y);
+    pMantissa->imag = _scalb(im, (int) -y);
 
 #ifdef debug_print
     printf("Determinant 10->2: (%20g,%20g)^%d\n", pMantissa->real,

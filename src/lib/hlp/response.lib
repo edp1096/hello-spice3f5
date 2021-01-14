@@ -1,6 +1,6 @@
-+help.obj&
-+provide.obj&
-+readhelp.obj&
-+textdisp.obj&
-+x11disp.obj&
-+xdisplay.obj;
+help.obj
+provide.obj
+readhelp.obj
+textdisp.obj
+x11disp.obj
+xdisplay.obj

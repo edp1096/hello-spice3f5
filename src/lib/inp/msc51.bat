@@ -51,4 +51,4 @@ cl /I..\..\include /c inptyplk.c >> ..\..\msc.out
 cl /I..\..\include /c ptfuncs.c >> ..\..\msc.out
 cl /I..\..\include /c sperror.c >> ..\..\msc.out
 cl /I..\..\include /c inpgstr.c >> ..\..\msc.out
-lib ..\inp.lib @response.lib >> ..\..\msc.out
+lib /OUT:..\inp.lib @response.lib >> ..\..\msc.out

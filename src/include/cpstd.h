@@ -32,15 +32,15 @@ typedef struct wordlist wordlist;
 
 /* Complex numbers. */
 
-struct _complex {   /* IBM portability... */
+struct my_complex {   /* IBM portability... */
     double cx_real;
     double cx_imag;
 } ;
 
-typedef struct _complex complex;
+typedef struct my_complex complex;
 
-#define realpart(cval)  ((struct _complex *) (cval))->cx_real
-#define imagpart(cval)  ((struct _complex *) (cval))->cx_imag
+#define realpart(cval)  ((struct my_complex *) (cval))->cx_real
+#define imagpart(cval)  ((struct my_complex *) (cval))->cx_imag
 
 /* Externs defined in std.c */
 

@@ -22,4 +22,4 @@ cl /I..\..\..\include /c bjtsset.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c bjtsupd.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c bjttemp.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c bjttrunc.c >> ..\..\..\msc.out
-lib ..\..\dev2.lib @response.lib >> ..\..\..\msc.out
+lib /OUT:..\..\dev2.lib @response.lib >> ..\..\..\msc.out

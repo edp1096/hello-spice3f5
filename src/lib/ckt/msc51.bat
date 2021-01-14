@@ -94,4 +94,4 @@ cl /I..\..\include /I..\dev /c tranaskq.c >> ..\..\msc.out
 cl /I..\..\include /I..\dev /c traninit.c >> ..\..\msc.out
 cl /I..\..\include /I..\dev /c transetp.c >> ..\..\msc.out
 cl /I..\..\include /I..\dev /c cktsens.c >> ..\..\msc.out
-lib ..\ckt.lib @response.lib >> ..\..\msc.out
+lib /OUT:..\ckt.lib @response.lib >> ..\..\msc.out

@@ -5,4 +5,4 @@ cl /I..\..\include /c readhelp.c >> ..\..\msc.out
 cl /I..\..\include /c textdisp.c >> ..\..\msc.out
 cl /I..\..\include /c x11disp.c >> ..\..\msc.out
 cl /I..\..\include /c xdisplay.c >> ..\..\msc.out
-lib ..\hlp.lib @response.lib >> ..\..\msc.out
+lib /OUT:..\hlp.lib @response.lib >> ..\..\msc.out

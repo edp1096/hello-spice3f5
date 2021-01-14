@@ -68,10 +68,10 @@ Copyright 1990 Regents of the University of California.  All rights reserved.
 
 #ifndef CONFIGURED
 
-error error error error
+// error error error error
 
-Operating system type unknown
+// Operating system type unknown
 
-error error error error
+// error error error error
 
 #endif

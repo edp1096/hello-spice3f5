@@ -7,4 +7,4 @@ cl /I..\..\..\include /c urcmdel.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c urcmpar.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c urcparam.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c urcsetup.c >> ..\..\..\msc.out
-lib ..\..\dev3.lib @response.lib >> ..\..\..\msc.out
+lib /OUT:..\..\dev3.lib @response.lib >> ..\..\..\msc.out

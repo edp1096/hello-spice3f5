@@ -16,4 +16,4 @@ cl /I..\..\..\include /c jfetpzld.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c jfetset.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c jfettemp.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c jfettrun.c >> ..\..\..\msc.out
-lib ..\..\dev3.lib @response.lib >> ..\..\..\msc.out
+lib /OUT:..\..\dev3.lib @response.lib >> ..\..\..\msc.out

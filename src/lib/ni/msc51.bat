@@ -12,4 +12,4 @@ cl /I..\..\include /c nipred.c >> ..\..\msc.out
 cl /I..\..\include /c nipzmeth.c >> ..\..\msc.out
 cl /I..\..\include /c nireinit.c >> ..\..\msc.out
 cl /I..\..\include /c nisenre.c >> ..\..\msc.out
-lib ..\ni.lib @response.lib >> ..\..\msc.out
+lib /OUT:..\ni.lib @response.lib >> ..\..\msc.out

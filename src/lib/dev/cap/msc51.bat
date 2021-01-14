@@ -18,4 +18,4 @@ cl /I..\..\..\include /c capsset.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c capsupd.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c captemp.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c captrunc.c >> ..\..\..\msc.out
-lib ..\..\dev1.lib @response.lib >> ..\..\..\msc.out
+lib /OUT:..\..\dev1.lib @response.lib >> ..\..\..\msc.out

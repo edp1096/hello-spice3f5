@@ -24,4 +24,4 @@ cl /I..\..\..\include /c mutpzld.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c mutsetup.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c mutsprt.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c mutsset.c >> ..\..\..\msc.out
-lib ..\..\dev1.lib @response.lib >> ..\..\..\msc.out
+lib /OUT:..\..\dev1.lib @response.lib >> ..\..\..\msc.out

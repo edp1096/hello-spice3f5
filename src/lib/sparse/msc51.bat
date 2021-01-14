@@ -7,4 +7,4 @@ cl /I..\..\include /c spsmp.c >> ..\..\msc.out
 cl /I..\..\include /c spsolve.c >> ..\..\msc.out
 cl /I..\..\include /c sputils.c >> ..\..\msc.out
 cl /I..\..\include /c spextra.c >> ..\..\msc.out
-lib ..\sparse.lib @response.lib >> ..\..\msc.out
+lib /OUT:..\sparse.lib @response.lib >> ..\..\msc.out

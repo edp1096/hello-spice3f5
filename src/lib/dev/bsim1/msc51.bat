@@ -18,4 +18,4 @@ cl /I..\..\..\include /c b1pzld.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c b1set.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c b1temp.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c b1trunc.c >> ..\..\..\msc.out
-lib ..\..\dev3.lib @response.lib >> ..\..\..\msc.out
+lib /OUT:..\..\dev3.lib @response.lib >> ..\..\..\msc.out

@@ -10,4 +10,4 @@ cl /I..\..\..\include /c asrcmdel.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c asrcpar.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c asrcpzld.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c asrcset.c >> ..\..\..\msc.out
-lib ..\..\dev1.lib @response.lib >> ..\..\..\msc.out
+lib /OUT:..\..\dev1.lib @response.lib >> ..\..\..\msc.out

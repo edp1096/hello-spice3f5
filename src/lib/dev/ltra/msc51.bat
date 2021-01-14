@@ -13,4 +13,4 @@ cl /I..\..\..\include /c ltraset.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c ltratemp.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c ltratrun.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c ltramask.c >> ..\..\..\msc.out
-lib ..\..\dev3.lib @response.lib >> ..\..\..\msc.out
+lib /OUT:..\..\dev3.lib @response.lib >> ..\..\..\msc.out

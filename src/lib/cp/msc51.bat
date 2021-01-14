@@ -18,4 +18,4 @@ cl /I..\..\include /c variable.c >> ..\..\msc.out
 cl /I..\..\include /c var2.c >> ..\..\msc.out
 cl /I..\..\include /c wlist.c >> ..\..\msc.out
 cl /I..\..\include /c numparse.c >> ..\..\msc.out
-lib ..\cp.lib @response.lib >> ..\..\msc.out
+lib /OUT:..\cp.lib @response.lib >> ..\..\msc.out

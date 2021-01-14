@@ -61,4 +61,4 @@ cl /I..\..\include /c dimens.c >> ..\..\msc.out
 cl /I..\..\include /c xgraph.c >> ..\..\msc.out
 cl /I..\..\include /c runcoms2.c >> ..\..\msc.out
 cl /I..\..\include /c breakp2.c >> ..\..\msc.out
-lib ..\fte.lib @response.lib >> ..\..\msc.out
+lib /OUT:..\fte.lib @response.lib >> ..\..\msc.out

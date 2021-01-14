@@ -10,4 +10,4 @@ cl /I..\..\..\include /c mos6set.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c mos6temp.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c mos6trun.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c mos6mask.c >> ..\..\..\msc.out
-lib ..\..\dev2.lib @response.lib >> ..\..\..\msc.out
+lib /OUT:..\..\dev2.lib @response.lib >> ..\..\..\msc.out

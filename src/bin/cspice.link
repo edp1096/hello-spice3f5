@@ -1,0 +1,12 @@
+cspice.obj cconf.obj tunepc.obj
+/OUT:cspice.exe
+..\lib\fte.lib
+..\lib\cp.lib
+..\lib\dev1.lib
+..\lib\dev2.lib
+..\lib\dev3.lib
+..\lib\ckt.lib
+..\lib\inp.lib
+..\lib\ni.lib
+..\lib\sparse.lib
+..\lib\misc.lib
