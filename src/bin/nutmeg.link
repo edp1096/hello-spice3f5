@@ -4,6 +4,5 @@ nutmeg.obj nnconf.obj tunepc.obj
 ..\lib\cp.lib
 ..\lib\hlp.lib
 ..\lib\inp.lib
-..\lib\mfbpc.lib
 ..\lib\misc.lib
 graphics
