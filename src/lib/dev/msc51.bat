@@ -2,7 +2,7 @@ del ..\dev1.lib
 del ..\dev2.lib
 del ..\dev3.lib
 cl /I..\..\include /c devsup.c >> ..\..\msc.out
-lib ..\dev1.lib @response.lib >> ..\..\msc.out
+lib /OUT:..\dev1.lib @response.lib >> ..\..\msc.out
 cd disto
 cmd /c msc51.bat
 cd ..
