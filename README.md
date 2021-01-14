@@ -1,4 +1,4 @@
-# Compile Berkeley SPICE 3F5
+# Compile Berkeley SPICE3F5
 
 * Used tool : MSVC 2017 Express
 * folders
