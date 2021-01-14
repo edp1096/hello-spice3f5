@@ -16,4 +16,4 @@ cl /I..\..\..\include /c mespzld.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c messetup.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c mestemp.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c mestrunc.c >> ..\..\..\msc.out
-lib /OUT:..\..\dev3.lib @response.lib >> ..\..\..\msc.out
+lib ..\..\dev3.lib @response.lib >> ..\..\..\msc.out

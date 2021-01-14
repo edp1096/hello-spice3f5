@@ -22,4 +22,4 @@ cl /I..\..\..\include /c mos3sset.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c mos3supd.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c mos3temp.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c mos3trun.c >> ..\..\..\msc.out
-lib /OUT:..\..\dev2.lib @response.lib >> ..\..\..\msc.out
+lib ..\..\dev2.lib @response.lib >> ..\..\..\msc.out

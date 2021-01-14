@@ -22,4 +22,4 @@ cl /I..\..\..\include /c diosset.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c diosupd.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c diotemp.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c diotrunc.c >> ..\..\..\msc.out
-lib /OUT:..\..\dev2.lib @response.lib >> ..\..\..\msc.out
+lib ..\..\dev2.lib @response.lib >> ..\..\..\msc.out

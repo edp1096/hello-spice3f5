@@ -11,4 +11,4 @@ cl /I..\..\..\include /c powderiv.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c sqrtder.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c tanderiv.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c timesder.c >> ..\..\..\msc.out
-lib /OUT:..\..\dev1.lib @response.lib >> ..\..\..\msc.out
+lib ..\..\dev1.lib @response.lib >> ..\..\..\msc.out

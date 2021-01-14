@@ -12,4 +12,4 @@ cl /I..\..\..\include /c vcvsset.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c vcvssld.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c vcvssprt.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c vcvssset.c >> ..\..\..\msc.out
-lib /OUT:..\..\dev1.lib @response.lib >> ..\..\..\msc.out
+lib ..\..\dev1.lib @response.lib >> ..\..\..\msc.out

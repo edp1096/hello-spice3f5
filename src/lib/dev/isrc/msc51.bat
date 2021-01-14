@@ -8,4 +8,4 @@ cl /I..\..\..\include /c isrcload.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c isrcmdel.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c isrcpar.c >> ..\..\..\msc.out
 cl /I..\..\..\include /c isrctemp.c >> ..\..\..\msc.out
-lib /OUT:..\..\dev1.lib @response.lib >> ..\..\..\msc.out
+lib ..\..\dev1.lib @response.lib >> ..\..\..\msc.out
