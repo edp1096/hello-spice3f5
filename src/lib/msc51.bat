@@ -1,30 +1,30 @@
 cd dev
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd ckt
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd cp
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd fte
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd hlp
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd inp
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd mfbpc
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd misc
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd ni
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd sparse
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..

@@ -4,80 +4,80 @@ del ..\dev3.lib
 cl /I..\..\include /c devsup.c >> ..\..\msc.out
 lib /OUT:..\dev1.lib @response.lib >> ..\..\msc.out
 cd disto
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd asrc
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd bjt
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd bsim1
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd bsim2
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd cap
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd cccs
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd ccvs
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd csw
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd dio
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd ind
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd isrc
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd jfet
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd ltra
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd mes
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd mos1
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd mos2
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd mos3
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd mos6
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd res
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd sw
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd tra
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd urc
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd vccs
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd vcvs
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd vsrc
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..

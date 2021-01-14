@@ -1,7 +1,7 @@
 del msc.out
 cd lib
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
 cd bin
-cmd msc51.bat
+cmd /c msc51.bat
 cd ..
