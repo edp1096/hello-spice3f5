@@ -16,9 +16,9 @@ cd ..
 cd inp
 cmd /c msc51.bat
 cd ..
-cd mfbpc
-cmd /c msc51.bat
-cd ..
+REM cd mfbpc
+REM cmd /c msc51.bat
+REM cd ..
 cd misc
 cmd /c msc51.bat
 cd ..
