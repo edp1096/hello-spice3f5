@@ -1,1 +1,3 @@
 bin
+util/makefile-gen
+util/makefile-gen.exe
