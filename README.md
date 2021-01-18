@@ -1,7 +1,7 @@
 # Compile Berkeley SPICE3F5
 
 * Tested (MinGW, GCC : bspice, cspice only)
-    * MSVC 2017 Express : `cd src ; msc51.bat`
+    * MSVC 2017 Express : MSVC dev console -> `cd src` -> `msc51.bat`
     * MinGW-W64 8.1.0 seh : `cd util ; go build ; cd ../src ; ../util/makefile-gen ; mingw32-make.exe`
     * GCC 5.4.0 / Ubuntu 16.04 : `cd util && go build && cd ../src && ../util/makefile-gen && make`
 
