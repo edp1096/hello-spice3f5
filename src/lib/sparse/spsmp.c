@@ -384,14 +384,27 @@ int *pExponent;
 
     /* Re-normalize (re or im may be > 2.0 or both < 1.0 */
     if (re != 0.0) {
+#ifdef LINUX
+	y = logb(re);
+#else
 	y = _logb(re);
+#endif
+
 	if (im != 0.0)
+#ifdef LINUX
+	    z = logb(im);
+#else
 	    z = _logb(im);
+#endif
 	else
 	    z = 0;
     } else if (im != 0.0) {
-	z = _logb(im);
-	y = 0;
+#ifdef LINUX
+        z = logb(im);
+#else
+        z = _logb(im);
+#endif
+    	y = 0;
     } else {
 	/* Singular */
 	/*printf("10 -> singular\n");*/
@@ -406,14 +419,26 @@ int *pExponent;
 	y = z;
 
     *pExponent = x + y;
+#ifdef LINUX
+    x = scalb(re, (int) -y);
+    z = scalb(im, (int) -y);
+#else
     x = _scalb(re, (int) -y);
     z = _scalb(im, (int) -y);
+#endif
+
 #ifdef debug_print
     printf(" ** values are: re %g, im %g, y %g, re' %g, im' %g\n",
 	    re, im, y, x, z);
 #endif
+
+#ifdef LINUX
+    pMantissa->real = scalb(re, (int) -y);
+    pMantissa->imag = scalb(im, (int) -y);
+#else
     pMantissa->real = _scalb(re, (int) -y);
     pMantissa->imag = _scalb(im, (int) -y);
+#endif
 
 #ifdef debug_print
     printf("Determinant 10->2: (%20g,%20g)^%d\n", pMantissa->real,

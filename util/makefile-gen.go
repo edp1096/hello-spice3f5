@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -70,23 +71,23 @@ func main() {
 				if isInSlice(pname, dev1) {
 					fnames := strings.Split(file, ".")
 					fname := fnames[0]
-					ccDev1 += "\tgcc -w -Iinclude -Ilib/dev -o " + fname + ".o -c " + file + "\n"
+					ccDev1 += "\tgcc -w -DHAS_STRINGS -DHAS_BCOPY -DHAS_STDLIB -Iinclude -Ilib/dev -o " + fname + ".o -c " + file + "\n"
 					arDev1 += " " + fname + ".o"
 				} else if isInSlice(pname, dev2) {
 					fnames := strings.Split(file, ".")
 					fname := fnames[0]
-					ccDev2 += "\tgcc -w -Iinclude -Ilib/dev -o " + fname + ".o -c " + file + "\n"
+					ccDev2 += "\tgcc -w -DHAS_STRINGS -DHAS_BCOPY -DHAS_STDLIB -Iinclude -Ilib/dev -o " + fname + ".o -c " + file + "\n"
 					arDev2 += " " + fname + ".o"
 				} else if isInSlice(pname, dev3) {
 					fnames := strings.Split(file, ".")
 					fname := fnames[0]
-					ccDev3 += "\tgcc -w -Iinclude -Ilib/dev -o " + fname + ".o -c " + file + "\n"
+					ccDev3 += "\tgcc -w -DHAS_STRINGS -DHAS_BCOPY -DHAS_STDLIB -Iinclude -Ilib/dev -o " + fname + ".o -c " + file + "\n"
 					arDev3 += " " + fname + ".o"
 				} else {
 					if fpaths[len(fpaths)-1] == "devsup.c" {
 						fnames := strings.Split(file, ".")
 						fname := fnames[0]
-						ccDev1 = "\tgcc -w -Iinclude -Ilib/dev -o " + fname + ".o -c " + file + "\n" + ccDev1
+						ccDev1 = "\tgcc -w -DHAS_STRINGS -DHAS_BCOPY -DHAS_STDLIB -Iinclude -Ilib/dev -o " + fname + ".o -c " + file + "\n" + ccDev1
 						arDev1 = " " + fname + ".o" + arDev1
 					} else {
 						wtf += file + "\n"
@@ -107,8 +108,11 @@ func main() {
 						// mfb, pwd.h
 						opts = "-DHAS_STAT"
 					}
+					if runtime.GOOS != "windows" {
+						opts += " -DLINUX -DHAS_FLOAT_H -DHAS_STRCHR"
+					}
 
-					ccLibs[key] += "\tgcc -w -Iinclude -Ilib/dev " + opts + " -o " + fname + ".o -c " + file + "\n"
+					ccLibs[key] += "\tgcc -w -DHAS_STRINGS -DHAS_BCOPY -DHAS_STDLIB -Iinclude -Ilib/dev " + opts + " -o " + fname + ".o -c " + file + "\n"
 					arLibs[key] += " " + fname + ".o"
 				}
 			default:
@@ -123,11 +127,11 @@ func main() {
 	bins += "\tgcc -w -Iinclude -o bin/nnconf.o -c bin/nnconf.c\n"
 	bins += "\tgcc -w -Iinclude -o bin/tunepc.o -c bin/tunepc.c\n"
 
-	bins += "\tgcc -w -Iinclude -Ilib/dev -DSIMULATOR -DBATCH -o bin/bspice.o -c bin/main.c\n"
-	bins += "\tgcc -w -o bspice.exe bin/bspice.o bin/bconf.o bin/tunepc.o -Llib -lfte -lcp -ldev3 -ldev2 -ldev1 -lckt -linp -lni -lsparse -lmisc \n"
+	bins += "\tgcc -w -DHAS_BCOPY -DHAS_STDLIB -Iinclude -Ilib/dev -DSIMULATOR -DBATCH -o bin/bspice.o -c bin/main.c\n"
+	bins += "\tgcc -w -DHAS_STRCHR -DHAS_STRINGS -DHAS_BCOPY -DHAS_STDLIB -o bspice.exe bin/bspice.o bin/bconf.o bin/tunepc.o -Llib -lfte -lcp -ldev3 -ldev2 -ldev1 -lckt -linp -lni -lsparse -lmisc -lm \n"
 
-	bins += "\tgcc -w -Iinclude -DSIMULATOR -DSPICE2 -DBATCH -o bin/cspice.o -c bin/main.c\n"
-	bins += "\tgcc -w -o cspice.exe bin/cspice.o bin/cconf.o bin/tunepc.o -Llib -lfte -lcp -ldev3 -ldev2 -ldev1 -lckt -linp -lni -lsparse -lmisc \n"
+	bins += "\tgcc -w -DHAS_BCOPY -DHAS_STDLIB -Iinclude -DSIMULATOR -DSPICE2 -DBATCH -o bin/cspice.o -c bin/main.c\n"
+	bins += "\tgcc -w -DHAS_STRCHR -DHAS_STRINGS -DHAS_BCOPY -DHAS_STDLIB -o cspice.exe bin/cspice.o bin/cconf.o bin/tunepc.o -Llib -lfte -lcp -ldev3 -ldev2 -ldev1 -lckt -linp -lni -lsparse -lmisc -lm \n"
 
 	result := ""
 
@@ -159,19 +163,25 @@ func main() {
 
 	result += "clean:\n"
 	result += "\trm -f lib/dev/*.o\n"
+	result += "\trm -f lib/dev/*.obj\n"
 	for _, v := range dev1 {
 		result += "\trm -f lib/dev/" + v + "/*.o\n"
+		result += "\trm -f lib/dev/" + v + "/*.obj\n"
 	}
 	for _, v := range dev2 {
 		result += "\trm -f lib/dev/" + v + "/*.o\n"
+		result += "\trm -f lib/dev/" + v + "/*.obj\n"
 	}
 	for _, v := range dev3 {
 		result += "\trm -f lib/dev/" + v + "/*.o\n"
+		result += "\trm -f lib/dev/" + v + "/*.obj\n"
 	}
 	for _, v := range libs {
 		result += "\trm -f lib/" + v + "/*.o\n"
+		result += "\trm -f lib/" + v + "/*.obj\n"
 	}
 	result += "\trm -f bin/*.o\n"
+	result += "\trm -f bin/*.obj\n"
 
 	d1 := []byte(result)
 	err = ioutil.WriteFile("Makefile", d1, 0644)
