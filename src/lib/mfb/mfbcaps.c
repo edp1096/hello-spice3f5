@@ -43,13 +43,81 @@ static int hopcount;       /* detect infinite loops in mfbcap, init 0 */
 
 FILE   *POpen();
 char   *strcpy();
-char   *MFBSkip();
 char   *MFBGetStr();
-char   *MFBCapDecod();
 int    MFBGetNum();
 int    MFBGetFlag();
 int    MFBGetEnt();
 int    MFBCheckForMCE();
+
+
+/*
+ * Skip to the next field.
+ */
+static char*
+MFBSkip(bp)
+char* bp;
+{
+    while (*bp && !(*bp == ',' && *(bp - 1) != '\\'))
+        bp++;
+
+    /* Now clear the white space */
+    while (*bp == ',' || *bp == ' ' || *bp == '\t')
+        bp++;
+    return(bp);
+}
+
+char* MFBSkip();
+
+
+
+/*
+ * MFBCapDecod decodes the string capability escapes.
+ */
+static char*
+MFBCapDecod(str, area)
+char* str;
+char** area;
+{
+    char* cp;
+    int c;
+    char* dp;
+    int i;
+
+    cp = *area;
+    while ((c = *str++) && c != ',') {
+        switch (c) {
+        case '^':
+            c = *str++ & 037;
+            break;
+
+        case '\\':
+            dp = "E\033^^\\\\,,n\nr\rt\tb\bf\f";
+            c = *str++;
+        nextc:
+            if (*dp++ == c) {
+                c = *dp++;
+                break;
+            }
+            dp++;
+            if (*dp)
+                goto nextc;
+            if (isdigit(c)) {
+                c -= '0', i = 2;
+                do
+                    c <<= 3, c |= *str++ - '0';
+                while (--i && isdigit(*str));
+            }
+            break;
+        }
+        *cp++ = c;
+    }
+    *cp++ = 0;
+    str = *area;
+    *area = cp;
+    return(str);
+}
+
+char* MFBCapDecod();
 
 
 /*
@@ -210,25 +278,6 @@ mfbnamatch(np)
     }
 
 
-
-/*
- * Skip to the next field.
- */
-static char *
-MFBSkip(bp)
-    char *bp;
-    {
-    while(*bp && !(*bp == ',' && *(bp - 1) != '\\'))
-    bp++;
-
-    /* Now clear the white space */
-    while(*bp == ',' || *bp == ' ' || *bp == '\t')
-    bp++;
-    return(bp);
-    }
-
-
-
 /*
  * Handle a flag option.
  * Flag options are given "naked", i.e. followed by a , or the end
@@ -296,56 +345,6 @@ MFBGetStr(id, area)
         return(MFBCapDecod(bp, area));
         }
     }
-
-
-
-/*
- * MFBCapDecod decodes the string capability escapes.
- */
-static char *
-MFBCapDecod(str, area)
-    char *str;
-    char **area;
-    {
-    char *cp;
-    int c;
-    char *dp;
-    int i;
-
-    cp = *area;
-    while((c = *str++) && c != ','){
-        switch (c){
-        case '^':
-            c = *str++ & 037;
-            break;
-
-        case '\\':
-            dp = "E\033^^\\\\,,n\nr\rt\tb\bf\f";
-            c = *str++;
-    nextc:
-                if(*dp++ == c){
-                c = *dp++;
-                break;
-                }
-            dp++;
-            if(*dp)
-                goto nextc;
-            if(isdigit(c)){
-                c -= '0', i = 2;
-                do
-                    c <<= 3, c |= *str++ - '0';
-                while(--i && isdigit(*str));
-                }
-            break;
-            }
-        *cp++ = c;
-        }
-    *cp++ = 0;
-    str = *area;
-    *area = cp;
-    return(str);
-    }
-
 
 
 /*

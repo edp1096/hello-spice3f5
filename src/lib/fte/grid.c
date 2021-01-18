@@ -33,6 +33,174 @@ typedef enum { x_axis, y_axis } Axis;
     ie, can get rid of it */
 static bool scaleunits = true;
 
+
+static
+drawlingrid(graph, units, spacing, nsp, dst, lmt, hmt, onedec, mult, mag,
+    digits, axis)
+    GRAPH* graph;
+char units[16];
+bool onedec;
+int nsp, spacing, mult;
+double hmt, lmt, dst;
+double mag;
+int digits;
+Axis axis;
+{
+
+    int i, j;
+    double m, step;
+    char buf[16];
+
+    /* i counts how many pixels we have drawn, and j counts which unit
+     * we are at.
+     */
+    SetLinestyle(1);
+    step = floor((double)dst / nsp * 100.0 + 0.000001);
+    for (i = 0, m = lmt * 100.0; m - 0.001 <= hmt * 100.0;
+        i += spacing, m += step)
+    {
+        j = m;
+        if (j == 0)
+            SetLinestyle(0);
+        if (graph->grid.gridtype != GRID_NONE) {
+            if (axis == x_axis)
+                DrawLine(graph->viewportxoff + i,
+                    graph->viewportyoff, graph->viewportxoff + i,
+                    graph->viewport.height + graph->viewportyoff);
+            else
+                DrawLine(graph->viewportxoff,
+                    graph->viewportyoff + i,
+                    graph->viewport.width + graph->viewportxoff,
+                    graph->viewportyoff + i);
+        }
+        if (j == 0)
+            SetLinestyle(1);
+
+        (void)sprintf(buf, "%.*f", digits + 1, m * mag / 100.0);
+
+#ifdef notdef
+        if (floor(step / 10.0) != step / 10.0)
+            (void)sprintf(buf, "%.*lf", mag, m * mag / 100.0);
+        else if (floor(step / 100.0) != step / 100.0)
+            (void)sprintf(buf, "%.1lf", m * mag / 100.0);
+        else
+            (void)sprintf(buf, "%lg", j * mag / 100);
+#endif
+
+        if (axis == x_axis)
+            Text(buf, graph->viewportxoff + i -
+                strlen(buf) / 2 * graph->fontwidth,
+                (int)(graph->fontheight * 2.5));
+        else
+            Text(buf, graph->viewportxoff -
+                graph->fontwidth * (strlen(buf)),
+                graph->viewportyoff + i -
+                graph->fontheight / 2);
+
+        /* This is to make sure things work when delta > hi - lo. */
+        if (nsp == 1)
+            j += 1000;
+    }
+    if (axis == x_axis)
+        Text(units, (int)(graph->absolute.width * 0.6),
+            graph->fontheight);
+    else
+        Text(units, graph->fontwidth,
+            (int)(graph->absolute.height - 2 * graph->fontheight));
+    Update();
+
+}
+
+
+static
+drawloggrid(graph, units, hmt, lmt, decsp, subs, pp, axis)
+GRAPH* graph;
+char* units;
+int hmt, lmt;
+int decsp, subs, pp;
+Axis axis;
+{
+    int i, j, k, l, m;
+    double t;
+    char buf[16];
+
+    /* Now plot every pp'th decade line, with subs lines between them. */
+    if (subs > 1)
+        SetLinestyle(0);
+    for (i = 0, j = lmt; j <= hmt; i += decsp * pp, j += pp) {
+        /* Draw the decade line */
+        if (graph->grid.gridtype != GRID_NONE) {
+            if (axis == x_axis)
+                DrawLine(graph->viewportxoff + i,
+                    graph->viewportyoff,
+                    graph->viewportxoff + i,
+                    graph->viewport.height
+                    + graph->viewportyoff);
+            else
+                DrawLine(graph->viewportxoff,
+                    graph->viewportyoff + i,
+                    graph->viewport.width
+                    + graph->viewportxoff,
+                    graph->viewportyoff + i);
+        }
+        if (j == -2)
+            (void)sprintf(buf, "0.01");
+        else if (j == -1)
+            (void)sprintf(buf, "0.1");
+        else if (j == 0)
+            (void)sprintf(buf, "1");
+        else if (j == 1)
+            (void)sprintf(buf, "10");
+        else if (j == 2)
+            (void)sprintf(buf, "100");
+        else
+            (void)sprintf(buf, "10^%d", j);
+        if (axis == x_axis)
+            Text(buf, graph->viewportxoff + i - strlen(buf) / 2,
+                (int)(graph->fontheight * 2.5));
+        else
+            Text(buf, graph->viewportxoff - graph->fontwidth *
+                (strlen(buf) + 1),
+                graph->viewportyoff + i -
+                graph->fontheight / 2);
+
+        if (j >= hmt)
+            break;
+
+        /* Now draw the subdivision lines */
+        if (subs > 1) {
+            SetLinestyle(1);
+            t = 10.0 / subs;
+            for (k = ceil(subs / 10.0) + 1; k < subs; k++) {
+                m = i + decsp * log10((double)t * k);
+                if (graph->grid.gridtype != GRID_NONE) {
+                    if (axis == x_axis)
+                        DrawLine(graph->viewportxoff + m,
+                            graph->viewportyoff,
+                            graph->viewportxoff + m,
+                            graph->viewport.height
+                            + graph->viewportyoff);
+                    else
+                        DrawLine(graph->viewportxoff,
+                            graph->viewportyoff + m,
+                            graph->viewport.width
+                            + graph->viewportxoff,
+                            graph->viewportyoff + m);
+                }
+            }
+            SetLinestyle(0);
+        }
+    }
+    if (axis == x_axis)
+        Text(units, (int)(graph->absolute.width * 0.6),
+            graph->fontheight);
+    else
+        Text(units, graph->fontwidth,
+            (int)(graph->absolute.height - 2 * graph->fontheight));
+    Update();
+}
+
+
 void
 gr_fixgrid(graph, xdelta, ydelta, xtype, ytype)
     GRAPH *graph;
@@ -473,83 +641,6 @@ lingrid(graph, lo, hi, delta, type, axis)
     return (dd);
 }
 
-static
-drawlingrid(graph, units, spacing, nsp, dst, lmt, hmt, onedec, mult, mag,
-    digits, axis)
-    GRAPH *graph;
-    char units[16];
-    bool onedec;
-    int nsp, spacing, mult;
-    double hmt, lmt, dst;
-    double mag;
-    int digits;
-    Axis axis;
-{
-
-    int i, j;
-    double m, step;
-    char buf[16];
-
-    /* i counts how many pixels we have drawn, and j counts which unit
-     * we are at.
-     */
-    SetLinestyle(1);
-    step = floor((double) dst / nsp * 100.0 + 0.000001);
-    for (i = 0, m = lmt * 100.0; m - 0.001 <= hmt * 100.0;
-      i += spacing, m += step)
-    {
-	j = m;
-        if (j == 0)
-            SetLinestyle(0);
-        if (graph->grid.gridtype != GRID_NONE) {
-            if (axis == x_axis)
-                DrawLine(graph->viewportxoff + i,
-                  graph->viewportyoff, graph->viewportxoff + i,
-                  graph->viewport.height + graph->viewportyoff);
-            else
-                DrawLine(graph->viewportxoff,
-                  graph->viewportyoff + i,
-                  graph->viewport.width + graph->viewportxoff,
-                  graph->viewportyoff + i);
-        }
-        if (j == 0)
-            SetLinestyle(1);
-
-	(void) sprintf(buf, "%.*f", digits + 1, m * mag / 100.0);
-
-#ifdef notdef
-	if (floor(step/10.0) != step/10.0)
-		(void) sprintf(buf, "%.*lf", mag, m * mag / 100.0);
-	else if (floor(step/100.0) != step/100.0)
-		(void) sprintf(buf, "%.1lf", m * mag / 100.0);
-	else
-		(void) sprintf(buf, "%lg", j * mag / 100);
-#endif
-
-	if (axis == x_axis)
-	    Text(buf, graph->viewportxoff + i -
-		    strlen(buf) / 2 * graph->fontwidth,
-		    (int) (graph->fontheight * 2.5));
-	else
-	    Text(buf, graph->viewportxoff -
-		    graph->fontwidth * (strlen(buf)),
-		    graph->viewportyoff + i -
-		    graph->fontheight / 2);
-
-        /* This is to make sure things work when delta > hi - lo. */
-        if (nsp == 1)
-            j += 1000;
-    }
-    if (axis == x_axis)
-        Text(units, (int) (graph->absolute.width * 0.6),
-            graph->fontheight);
-    else
-        Text(units, graph->fontwidth,
-            (int) (graph->absolute.height - 2 * graph->fontheight));
-    Update();
-
-}
-
 /* Plot a log grid.  Note that we pay no attention to x- and y-delta here. */
 /* ARGSUSED */
 static double *
@@ -661,93 +752,6 @@ loggrid(graph, lo, hi, type, axis)
 
 }
 
-static
-drawloggrid(graph, units, hmt, lmt, decsp, subs, pp, axis)
-    GRAPH *graph;
-    char *units;
-    int hmt, lmt;
-    int decsp, subs, pp;
-    Axis axis;
-{
-    int i, j, k, l, m;
-    double t;
-    char buf[16];
-
-    /* Now plot every pp'th decade line, with subs lines between them. */
-    if (subs > 1)
-	SetLinestyle(0);
-    for (i = 0, j = lmt; j <= hmt; i += decsp * pp, j += pp) {
-        /* Draw the decade line */
-	if (graph->grid.gridtype != GRID_NONE) {
-	    if (axis == x_axis)
-		DrawLine(graph->viewportxoff + i,
-		    graph->viewportyoff,
-		    graph->viewportxoff + i,
-		    graph->viewport.height
-		      +graph->viewportyoff);
-	    else
-		DrawLine(graph->viewportxoff,
-		    graph->viewportyoff + i, 
-		    graph->viewport.width
-		      + graph->viewportxoff,
-		    graph->viewportyoff + i);
-	}
-	if (j == -2)
-	    (void) sprintf(buf, "0.01");
-	else if (j == -1)
-	    (void) sprintf(buf, "0.1");
-	else if (j == 0)
-	    (void) sprintf(buf, "1");
-	else if (j == 1)
-	    (void) sprintf(buf, "10");
-	else if (j == 2)
-	    (void) sprintf(buf, "100");
-	else
-	    (void) sprintf(buf, "10^%d", j);
-	if (axis == x_axis)
-	    Text(buf, graph->viewportxoff + i - strlen(buf) / 2,
-		    (int) (graph->fontheight * 2.5));
-	else
-	    Text(buf, graph->viewportxoff - graph->fontwidth *
-		    (strlen(buf) + 1),
-		    graph->viewportyoff + i -
-		    graph->fontheight / 2);
-
-	if (j >= hmt)
-	    break;
-
-        /* Now draw the subdivision lines */
-	if (subs > 1) {
-            SetLinestyle(1);
-	    t = 10.0 / subs;
-	    for (k = ceil(subs / 10.0) + 1; k < subs; k++) {
-		m = i + decsp * log10((double) t * k);
-		if (graph->grid.gridtype != GRID_NONE) {
-		    if (axis == x_axis)
-			DrawLine(graph->viewportxoff + m,
-			    graph->viewportyoff,
-			    graph->viewportxoff + m,
-			    graph->viewport.height
-			      + graph->viewportyoff);
-		    else
-			DrawLine(graph->viewportxoff,
-			    graph->viewportyoff + m,
-			    graph->viewport.width
-			      + graph->viewportxoff,
-			    graph->viewportyoff + m);
-		}
-	    }
-            SetLinestyle(0);
-	}
-    }
-    if (axis == x_axis)
-        Text(units, (int) (graph->absolute.width * 0.6),
-            graph->fontheight);
-    else
-        Text(units, graph->fontwidth,
-            (int) (graph->absolute.height - 2 * graph->fontheight));
-    Update();
-}
 
 /* Polar grids */
 

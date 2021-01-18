@@ -41,12 +41,64 @@ Author: 1986 Wayne A. Christopher, U. C. Berkeley CAD Group
 
 static char *getsubject();
 static toplink *getsubtoplink();
-extern void sortlist(), tlfree();
-extern int sortcmp();
 
 static topic *alltopics = NULL;
 
 static fplace *copy_fplace();
+
+
+static int
+sortcmp(tlp1, tlp2)
+toplink** tlp1, ** tlp2;
+{
+    return (strcmp((*tlp1)->description, (*tlp2)->description));
+}
+
+extern int sortcmp();
+
+static void
+tlfree(tl)
+toplink* tl;
+{
+    toplink* nt = NULL;
+
+    while (tl) {
+        tfree(tl->description);
+        tfree(tl->place->filename);
+        tfree(tl->place);
+        /* Don't free the button stuff... */
+        nt = tl->next;
+        tfree(tl);
+        tl = nt;
+    }
+    return;
+}
+
+static void
+sortlist(tlp)
+toplink** tlp;
+{
+    toplink** vec, * tl;
+    int num = 0, i;
+
+    for (tl = *tlp; tl; tl = tl->next)
+        num++;
+    if (!num)
+        return;
+    vec = (toplink**)tmalloc(sizeof(toplink*) * num);
+    for (tl = *tlp, i = 0; tl; tl = tl->next, i++)
+        vec[i] = tl;
+    (void)qsort((char*)vec, num, sizeof(toplink*), sortcmp);
+    *tlp = vec[0];
+    for (i = 0; i < num - 1; i++)
+        vec[i]->next = vec[i + 1];
+    vec[i]->next = NULL;
+    tfree(vec);
+    return;
+}
+
+extern void sortlist(), tlfree();
+
 
 topic *
 hlp_read(place)
@@ -272,35 +324,6 @@ getsubject(place)
     return (copy(&buf[9]));     /* don't copy "SUBJECT: " */
 }
 
-static void
-sortlist(tlp)
-    toplink **tlp;
-{
-    toplink **vec, *tl;
-    int num = 0, i;
-
-    for (tl = *tlp; tl; tl = tl->next)
-        num++;
-    if (!num)
-        return;
-    vec = (toplink **) tmalloc(sizeof (toplink *) * num);
-    for (tl = *tlp, i = 0; tl; tl = tl->next, i++)
-        vec[i] = tl;
-    (void) qsort((char *) vec, num, sizeof (toplink *), sortcmp);
-    *tlp = vec[0];
-    for (i = 0; i < num - 1; i++)
-        vec[i]->next = vec[i + 1];
-    vec[i]->next = NULL;
-    tfree(vec);
-    return;
-}
-
-static int
-sortcmp(tlp1, tlp2)
-    toplink **tlp1, **tlp2;
-{
-    return (strcmp((*tlp1)->description, (*tlp2)->description));
-}
 
 void
 hlp_free()
@@ -317,24 +340,6 @@ hlp_free()
         tfree(top);
     }
     alltopics = NULL;
-    return;
-}
-
-static void
-tlfree(tl)
-    toplink *tl;
-{
-    toplink *nt = NULL;
-
-    while (tl) {
-        tfree(tl->description);
-        tfree(tl->place->filename);
-        tfree(tl->place);
-        /* Don't free the button stuff... */
-        nt = tl->next;
-        tfree(tl);
-        tl = nt;
-    }
     return;
 }
 

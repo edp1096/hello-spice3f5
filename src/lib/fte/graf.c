@@ -52,6 +52,64 @@ double *readtics();
 #define XFACTOR 2       /* How much to expand the X scale during iplot. */
 #define YFACTOR 1.5     /* How much to expand the Y scale during iplot. */
 
+static drawlegend(graph, plotno, dv)
+GRAPH* graph;
+int plotno;
+struct dvec* dv;
+{
+
+    int x, y, i;
+    char buf[16];
+
+    x = ((plotno % 2) ? graph->viewportxoff :
+        ((graph->viewport.width) / 2));
+    y = graph->absolute.height - graph->fontheight
+        - ((plotno + 2) / 2) * (graph->fontheight);
+    i = y + graph->fontheight / 2 + 1;
+    SetColor(dv->v_color);
+    if (graph->plottype == PLOT_POINT) {
+        (void)sprintf(buf, "%c : ", dv->v_linestyle);
+        Text(buf, x + graph->viewport.width / 20
+            - 3 * graph->fontwidth, y);
+    }
+    else {
+        SetLinestyle(dv->v_linestyle);
+        DrawLine(x, i, x + graph->viewport.width / 20, i);
+    }
+    SetColor(1);
+    Text(dv->v_name, x + graph->viewport.width / 20
+        + graph->fontwidth, y);
+
+}
+
+
+static gr_resize_internal(graph)
+GRAPH* graph;
+{
+
+    if (!graph->grid.xsized)
+        graph->viewport.width = graph->absolute.width -
+        1.4 * graph->viewportxoff;
+    if (!graph->grid.ysized)
+        graph->viewport.height = graph->absolute.height -
+        2 * graph->viewportyoff;
+
+    gr_fixgrid(graph, graph->grid.xdelta, graph->grid.ydelta,
+        graph->grid.xdatatype, graph->grid.ydatatype);
+
+    /* cache width and height info to make DatatoScreen go fast */
+    /* note: XXX see if this is actually used anywhere */
+    graph->datawindow.width = graph->datawindow.xmax -
+        graph->datawindow.xmin;
+    graph->datawindow.height = graph->datawindow.ymax -
+        graph->datawindow.ymin;
+
+    /* cache (datawindow size) / (viewport size) */
+    graph->aspectratiox = graph->datawindow.width / graph->viewport.width;
+    graph->aspectratioy = graph->datawindow.height / graph->viewport.height;
+
+}
+
 /*
  *  Start of a new graph.
  *  Fill in the data that gets displayed.
@@ -427,36 +485,6 @@ GRAPH *graph;
 
 }
 
-static
-drawlegend(graph, plotno, dv)
-GRAPH *graph;
-int plotno;
-struct dvec *dv;
-{
-
-    int x, y, i;
-    char buf[16];
-
-    x = ((plotno % 2) ? graph->viewportxoff :
-            ((graph->viewport.width) / 2));
-    y = graph->absolute.height - graph->fontheight
-            - ((plotno + 2) / 2) * (graph->fontheight);
-    i = y + graph->fontheight / 2 + 1;
-    SetColor(dv->v_color);
-    if (graph->plottype == PLOT_POINT) {
-        (void) sprintf(buf, "%c : ", dv->v_linestyle);
-        Text(buf, x + graph->viewport.width / 20
-                - 3 * graph->fontwidth, y);
-    } else {
-        SetLinestyle(dv->v_linestyle);
-        DrawLine(x, i, x + graph->viewport.width / 20, i);
-    }
-    SetColor(1);
-    Text(dv->v_name, x + graph->viewport.width / 20
-            + graph->fontwidth, y);
-
-}
-
 /* end one plot of a graph */
 void
 gr_end(dv)
@@ -543,33 +571,6 @@ GRAPH *graph;
 #ifndef HAS_X_
     gr_redraw(graph);
 #endif
-
-}
-
-static gr_resize_internal(graph)
-GRAPH *graph;
-{
-
-    if (!graph->grid.xsized)
-	    graph->viewport.width = graph->absolute.width -
-		    1.4 * graph->viewportxoff;
-    if (!graph->grid.ysized)
-	    graph->viewport.height = graph->absolute.height -
-		    2 * graph->viewportyoff;
-    
-    gr_fixgrid(graph, graph->grid.xdelta, graph->grid.ydelta,
-            graph->grid.xdatatype, graph->grid.ydatatype);
-
-    /* cache width and height info to make DatatoScreen go fast */
-    /* note: XXX see if this is actually used anywhere */
-    graph->datawindow.width = graph->datawindow.xmax -
-                    graph->datawindow.xmin;
-    graph->datawindow.height = graph->datawindow.ymax -
-                    graph->datawindow.ymin;
-
-    /* cache (datawindow size) / (viewport size) */
-    graph->aspectratiox = graph->datawindow.width / graph->viewport.width;
-    graph->aspectratioy = graph->datawindow.height / graph->viewport.height;
 
 }
 
