@@ -1,0 +1,6 @@
+Basic RR circuit
+.op
+vin 1 0 dc 1
+r1 1 2 1k
+r2 2 0 1k
+.end

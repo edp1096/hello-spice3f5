@@ -1,0 +1,7 @@
+Basic RL circuit
+r 1 2 100
+l 2 0 1m
+vin 1 0 sin (0 5 1k) dc 0
+.tran  0.05m 5m
+.plot tran v(2)
+.end
